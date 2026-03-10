@@ -102,11 +102,11 @@ export const templates = {
   }
 }
 
-\\newcommand{\\resumeSubheading}[4]{
+\\newcommand{\\resumeSubheading}[3]{
   \\vspace{-1pt}\\item
     \\begin{tabular*}{\\textwidth}[t]{l@{\\extracolsep{\\fill}}r}
       \\textbf{#1} & {\\color{dark-grey}\\small #2}\\vspace{1pt}\\\\ % top row of resume entry
-      \\textit{#3} & {\\color{dark-grey} \\small #4}\\\\ % second row of resume entry
+      \\textit{#3}}\\\\ % second row of resume entry
     \\end{tabular*}\\vspace{-4pt}
 }
 
@@ -181,8 +181,9 @@ export const templates = {
       .map(
         (experience) => `
     \\resumeSubheading
-      {${experience.company}}{${experience.time}}
-      {${experience.job}}{${experience.location}}
+      {${experience.company}}
+      {${experience.time}}
+      {${experience.job}}
       \\resumeItemListStart
         ${experience.details
           .map(
@@ -207,8 +208,9 @@ export const templates = {
       .map(
         (education) => `
     \\resumeSubheading
-      {${education.school}}{${education.time}}
-      {${education.degree}}{${education.location}}
+      {${education.school}}
+      {${education.time}}
+      {${education.degree}}
        	\\resumeItemListStart
        	${education.details
           .map(
@@ -303,9 +305,8 @@ export const templates = {
 \\begin{document}
 
 \\printPersonalInfo{
-  \\personalInfo{\\tag{Residence}\\info{${data.location}}}
-  \\personalInfo{\\tag{Email}\\info{${data.email}} \\infoSeparator \\tag{Phone}\\info{${data.phone_number}}}
-  \\personalInfo{\\tag{LinkedIn}\\info{${data.linkedin.replace("in/", "")}}}
+  \\personalInfo{\\info{${data.location}}}
+  \\personalInfo{\\info{${data.email}} \\infoSeparator \\info{${data.phone_number}} \\infoSeparator \\info{${data.linkedin}}}
 }
 
 
@@ -328,7 +329,7 @@ export const templates = {
     ${data.experiences
       .map(
         (experience) => `
-        \\begin{rSubsection}{${experience.company}}{${experience.time}}{${experience.job}}{${experience.location}}
+        \\begin{rSubsection}{${experience.company}}{${experience.time}}{${experience.job}}{${experience.location ?? ""}}
             ${experience.details
               .map(
                 (detail) => `
@@ -337,30 +338,6 @@ export const templates = {
               )
               .join("\n")}
         \\end{rSubsection}
-    `,
-      )
-      .join("\n")}
-
-\\end{rSection}
-
-%----------------------------------------------------------------------------------------
-%   Education section
-%----------------------------------------------------------------------------------------
-
-\\begin{rSection}{Education}
-
-    ${data.education
-      .map(
-        (education) => `
-      \\begin{rSubsectionNoBullet}{\\bf ${education.school}}{${education.time}}{${education.degree}}{${education.location}}
-          ${education.details
-            .map(
-              (detail) => `
-            \\italicitem{${detail}}
-            `,
-            )
-            .join("\n")}
-      \\end{rSubsectionNoBullet}
     `,
       )
       .join("\n")}
@@ -380,6 +357,30 @@ export const templates = {
       )
       .join("\n")}
 }
+
+%----------------------------------------------------------------------------------------
+%   Education section
+%----------------------------------------------------------------------------------------
+
+\\begin{rSection}{Education}
+
+    ${data.education
+      .map(
+        (education) => `
+      \\begin{rSubsectionNoBullet}{\\bf ${education.school}}{${education.time}}{${education.degree}}{${education.location ?? ""}}
+          ${education.details
+            .map(
+              (detail) => `
+            \\italicitem{${detail}}
+            `,
+            )
+            .join("\n")}
+      \\end{rSubsectionNoBullet}
+    `,
+      )
+      .join("\n")}
+
+\\end{rSection}
 
 %----------------------------------------------------------------------------------------
 % Miscellaneous

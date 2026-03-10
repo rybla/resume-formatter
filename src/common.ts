@@ -14,7 +14,7 @@ export const ResumeDataSchema = z.object({
   x: z.optional(LatexString),
   linkedin: LatexString,
   summary: LatexString,
-  location: LatexString,
+  location: z.optional(LatexString),
   skills: z.array(
     z.object({
       label: LatexString,
@@ -27,7 +27,7 @@ export const ResumeDataSchema = z.object({
       job: LatexString,
       time: LatexString,
       details: z.array(LatexString),
-      location: LatexString,
+      location: z.optional(LatexString),
     }),
   ),
   miscellaneous: z.array(
@@ -42,7 +42,7 @@ export const ResumeDataSchema = z.object({
       details: z.array(LatexString),
       time: LatexString,
       degree: LatexString,
-      location: LatexString,
+      location: z.optional(LatexString),
     }),
   ),
 });
