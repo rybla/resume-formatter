@@ -228,4 +228,174 @@ export const templates = {
 \\end{document}
     `;
   },
+
+  elegant(data: ResumeData): string {
+    return `
+% This template is designed to offer an aesthetically pleasing resume that adheres to a formal and institutional tone, making it suitable for applications to companies and research centers requiring a high degree of professionalism. Navy blue has been chosen as the primary color to align with these objectives.
+% The code is well-documented and annotated, allowing users to easily customize and modify it according to their needs. Please note that the template's content is meant to be humorous and should not be taken literally. We are grateful for your interest in using this template for your professional endeavors.
+% Author: Christian Maria Giannetti
+
+%----------------------------------------------------------------------------------------
+%  Packages And Other Document Configurations
+%----------------------------------------------------------------------------------------
+
+\\documentclass{resume} % Use the custom resume.cls style
+
+% Document margins
+\\usepackage[left=0.75in,top=0.6in,right=0.75in,bottom=0.6in]{geometry}
+
+% Color and hyperlink packages
+\\usepackage{xcolor}
+\\usepackage{hyperref}
+
+% Footnote and margin adjustment packages
+\\usepackage{footnote}
+\\usepackage{changepage}
+
+% Fontawesome package for icons
+\\usepackage{fontawesome}
+
+% Tabularx package for custom tables
+\\usepackage{tabularx}
+
+% Define navyblue color
+% \\definecolor{navyblue}{RGB}{75, 143, 156}
+% \\definecolor{navyblue}{RGB}{42, 128, 145}
+% \\definecolor{navyblue}{RGB}{8, 138, 163}
+\\definecolor{navyblue}{RGB}{1, 58, 69}
+
+
+%----------------------------------------------------------------------------------------
+%   Customizations
+%----------------------------------------------------------------------------------------
+
+% Define italicitem, bolditem, and plainitem commands
+\\newcommand{\\italicitem}[1]{\\item{\\textit{#1}}}
+\\newcommand{\\bolditem}[1]{\\item{\\textbf{#1}}}
+\\newcommand{\\plainitem}[1]{\\item{#1}}
+
+% Define user-friendly link command for hyperlinks
+\\newcommand{\\link}[2]{{\\href{#1}{#2}}}
+
+\\newcommand{\\entry}[2]{#1 & #2 \\tabularnewline} % Defines an entry with two arguments: #1 for the first column and #2 for the second column
+
+%----------------------------------------------------------------------------------------
+%   Define envsection command for defining a new environment section
+%----------------------------------------------------------------------------------------
+
+\\newcommand{\\tableEnv}[2]{%
+  \\begin{rSection}{#1} % Begin rSection with the given name
+    \\begin{adjustwidth}{0.0in}{0.1in} % Set the left and right margins
+      \\begin{tabularx}{\\linewidth}{@{} >{\\bfseries}l @{\\hspace{6ex}} X @{}}
+        #2 % Print the content inside the tabularx environment
+      \\end{tabularx}
+    \\end{adjustwidth}
+  \\end{rSection}
+}
+
+%----------------------------------------------------------------------------------------
+%   Begin document
+%----------------------------------------------------------------------------------------
+
+% Set name with navyblue color
+\\name{\\color{navyblue} ${data.name}}
+
+\\begin{document}
+
+\\printPersonalInfo{
+  \\personalInfo{\\tag{Residence}\\info{${data.location}}}
+  \\personalInfo{\\tag{Email}\\info{${data.email}} \\infoSeparator \\tag{Phone}\\info{${data.phone_number}}}
+  \\personalInfo{\\tag{LinkedIn}\\info{${data.linkedin.replace("in/", "")}}
+}
+
+
+%----------------------------------------------------------------------------------------
+%   Summary
+%----------------------------------------------------------------------------------------
+
+\\begin{rSection}{Summary}
+
+  ${data.summary}
+
+\\end{rSection}
+
+%----------------------------------------------------------------------------------------
+%   Work experience section
+%----------------------------------------------------------------------------------------
+
+\\begin{rSection}{Work experience}
+
+    ${data.experiences
+      .map(
+        (experience) => `
+        \\begin{rSubsection}{${experience.company}}{${experience.time}}{${experience.job}}{${experience.location}}
+            ${experience.details
+              .map(
+                (detail) => `
+              \\item ${detail}.
+              `,
+              )
+              .join("\n")}
+        \\end{rSubsection}
+    `,
+      )
+      .join("\n")}
+
+\\end{rSection}
+
+%----------------------------------------------------------------------------------------
+%   Education section
+%----------------------------------------------------------------------------------------
+
+\\begin{rSection}{Education}
+
+    ${data.education
+      .map(
+        (education) => `
+      \\begin{rSubsectionNoBullet}{\\bf ${education.school}}{${education.time}}{${education.degree}}{${education.location}}
+          ${education.details
+            .map(
+              (detail) => `
+            \\italicitem{${detail}}
+            `,
+            )
+            .join("\n")}
+      \\end{rSubsectionNoBullet}
+    `,
+      )
+      .join("\n")}
+
+\\end{rSection}
+
+%----------------------------------------------------------------------------------------
+% Skills
+%----------------------------------------------------------------------------------------
+
+\\tableEnv{Skills}{
+    ${data.skills
+      .map(
+        (skill) => `
+      \\entry{${skill.label}}{${skill.description}}
+      `,
+      )
+      .join("\n")}
+}
+
+%----------------------------------------------------------------------------------------
+% Miscellaneous
+%----------------------------------------------------------------------------------------
+
+\\tableEnv{Miscellaneous}{
+    ${data.miscellaneous
+      .map(
+        (misc) => `
+      \\entry{${misc.label}}{${misc.description}}
+    `,
+      )
+      .join("\n")}
+}
+
+\\end{document}
+`;
+  },
 };
