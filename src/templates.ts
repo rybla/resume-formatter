@@ -305,7 +305,7 @@ export const templates = {
 \\printPersonalInfo{
   \\personalInfo{\\tag{Residence}\\info{${data.location}}}
   \\personalInfo{\\tag{Email}\\info{${data.email}} \\infoSeparator \\tag{Phone}\\info{${data.phone_number}}}
-  \\personalInfo{\\tag{LinkedIn}\\info{${data.linkedin.replace("in/", "")}}
+  \\personalInfo{\\tag{LinkedIn}\\info{${data.linkedin.replace("in/", "")}}}
 }
 
 
